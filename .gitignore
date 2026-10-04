@@ -12,6 +12,7 @@ node_modules
 coverage
 **/.DS_Store
 *.bak
+.github_token
 
 # Code packages itself here.
 /lib/vscode-reh-web-*
