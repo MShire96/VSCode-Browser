@@ -4,7 +4,7 @@ FROM node:24.21.0-bookworm AS builder
 
 SHELL ["/bin/bash", "-c"]
 
-WORKDIR /app
+WORKDIR /src
 
 ENV VERSION=0.0.0 \
     ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
@@ -27,6 +27,9 @@ RUN apt-get update -y && apt-get install -y \
 COPY . .
 
 RUN git submodule update --init
+
+WORKDIR /src/app
+
 RUN quilt push -a 
 
 # Install vscode build tools
@@ -60,7 +63,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
         git \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /app/release /usr/lib/code-server
+COPY --from=builder /src/app/release /usr/lib/code-server
 
 RUN useradd -m -u 1000 coder && mkdir -p /home/coder/project && chown -R coder:coder /home/coder
 USER coder

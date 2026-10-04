@@ -1,9 +1,10 @@
-out/
-release/
+app/out
+app/release
+app/.cache
 **/node_modules
-.cache
 .github_token
 Dockerfile
 build.log
 *.log
 .dockerignore
+infra
