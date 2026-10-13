@@ -8,12 +8,12 @@ terraform {
 }
 
 provider "aws" {
-  # Configuration options
 
   default_tags {
     tags = {
       Project = "vscode"
       Owner   = "mohamed"
+      Use = "Bootstrap"
     }
   }
 }
