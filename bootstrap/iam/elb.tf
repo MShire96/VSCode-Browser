@@ -20,6 +20,7 @@ data "aws_iam_policy_document" "terraform_elb" {
       "elasticloadbalancing:AddTags",
       "elasticloadbalancing:DescribeTags",
       "elasticloadbalancing:ModifyListener",
+      "elasticloadbalancing:DescribeListenerAttributes",
       "ec2:DescribeAccountAttributes",
       "ec2:DescribeVpcs",
       "ec2:DescribeSubnets",
