@@ -32,3 +32,7 @@ data "aws_ecr_image" "vscoder" {
   repository_name = data.aws_ecr_repository.vscoder.name
   image_tag       = "latest"
 }
+
+data "aws_route53_zone" "moshire" {
+  name         = var.hosted_zone_name
+}
