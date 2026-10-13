@@ -10,7 +10,9 @@ data "aws_iam_policy_document" "terraform_ecr" {
       "ecr:UploadLayerPart",
       "ecr:InitiateLayerUpload",
       "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage"
+      "ecr:PutImage",
+      "ecr:DescribeImages",
+      "ecr:ListTagsForResource"
     ]
     resources = ["*"]
   }
