@@ -29,7 +29,7 @@ resource "aws_iam_role_policy" "terraform_deployment_iam" {
       {
         Effect = "Allow"
 
-        Action = [  # What is the role allowed to do
+        Action = [ # What is the role allowed to do
           "iam:CreatePolicy",
           "iam:DeletePolicy",
           "iam:CreatePolicyVersion",
