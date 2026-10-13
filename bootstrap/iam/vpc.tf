@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "terraform_vpc" {
       "ec2:DeleteNatGateway",
       "ec2:DescribeNatGateways",
       "ec2:AssociateAddress",
-      "ec2:DisassociateAddress",
+      "ec2:DisassociateAddress"
     ]
     resources = ["*"]
   }
