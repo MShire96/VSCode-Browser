@@ -27,8 +27,8 @@ resource "aws_ecs_service" "vscode_service" {
 resource "aws_ecs_task_definition" "vscode_task" {
   family                   = var.vscode_family
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 256
-  memory                   = 512
+  cpu                      = 1024
+  memory                   = 2048
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
   container_definitions = jsonencode([
@@ -36,6 +36,12 @@ resource "aws_ecs_task_definition" "vscode_task" {
       name      = var.ecs_task_name
       image     = var.vscoder_ecr_imageuri
       essential = true
+      environment = [
+        {
+          name = "PASSWORD"
+          value = "changeme"
+        }
+      ]
       portMappings = [
         {
           containerPort = 8080
