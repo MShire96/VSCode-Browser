@@ -16,10 +16,19 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "vscode-terraform-bucket"
-    key    = "tf-state-deploy"
-    region = "us-east-1"
-    encrypt = true
+    bucket       = "vscode-terraform-bucket"
+    key          = "tf-state-deploy"
+    region       = "us-east-1"
+    encrypt      = true
     use_lockfile = true
   }
+}
+
+data "aws_ecr_repository" "vscoder" {
+  name = "vscode"
+}
+
+data "aws_ecr_image" "vscoder" {
+  repository_name = data.aws_ecr_repository.vscoder.name
+  image_tag       = "latest"
 }
