@@ -1,0 +1,13 @@
+variable "aws_region" {}
+variable "terraform_deployment_role_arn" {}
+variable "vscode_s3_backend_key" {}
+variable "vpc_cidr_block" {}
+variable "public_cidr" {}
+variable "private_cidr" {}
+variable "terraform_deployment_role_name" {}
+variable "myip" {}
+variable "alb_name" {}
+variable "alb_sg_name" {}
+variable "ecs_task_name" {}
+variable "ecs_cluster_name" {}
+variable "ecr_task_execution_role_policy" {}
