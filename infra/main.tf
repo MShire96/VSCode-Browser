@@ -12,6 +12,7 @@ module "alb" {
   public_subnet_ids = module.vpc.public_subnet_ids
   alb_sg_name       = var.alb_sg_name
   vpc_id            = module.vpc.vpc_id
+  acm_cert_validation_arn = module.acm.acm_certificate_validation_arn
 }
 
 module "ecs" {
@@ -26,3 +27,17 @@ module "ecs" {
   private_subnet_ids             = module.vpc.private_subnet_ids
 }
 
+module "dns" {
+  source = "./modules/dns"
+  vscode_elb_ip = module.alb.alb_dns_name
+  hosted_zone_name = var.hosted_zone_name
+  a_record_name = var.a_record_name
+  alb_dns_name = module.alb.alb_dns_name
+  alb_zone_id = module.alb.alb_zone_id
+}
+
+module "acm" {
+  source = "./modules/acm"
+  a_record_name = var.a_record_name
+  r53_hosted_zone_id = data.aws_route53_zone.moshire.zone_id
+}
