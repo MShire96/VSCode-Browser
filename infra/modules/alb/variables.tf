@@ -23,5 +23,9 @@ variable "lb_target_group_name" {
   default = "vscoder-ecs-target-group"
 }
 
+variable "acm_cert_validation_arn" {
+  type = string  
+}
+
 
 
