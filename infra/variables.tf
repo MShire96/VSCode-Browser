@@ -11,3 +11,5 @@ variable "alb_sg_name" {}
 variable "ecs_task_name" {}
 variable "ecs_cluster_name" {}
 variable "ecr_task_execution_role_policy" {}
+variable "hosted_zone_name" {}
+variable "a_record_name" {}
