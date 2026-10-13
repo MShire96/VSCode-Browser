@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "terraform_iam" {
     ]
     resources = [
       aws_iam_role.terraform_deployment.arn,
-      "arn:aws:iam::190285489485:role/ecs-execution-role"
+      "arn:aws:iam::190285489485:role/ecs-vsc-exe-role"
     ]
   }
 }
