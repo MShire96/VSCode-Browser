@@ -12,8 +12,8 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Project     = "vscode"
-      Owner       = "mohamed"
+      Project = "vscode"
+      Owner   = "mohamed"
     }
   }
 }
