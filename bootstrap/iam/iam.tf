@@ -20,10 +20,12 @@ data "aws_iam_policy_document" "terraform_iam" {
       "iam:AttachRolePolicy",
       "iam:TagRole",
       "iam:TagPolicy",
-      "iam:PassRole"
+      "iam:PassRole",
+      "iam:CreateRole"
     ]
     resources = [
-      aws_iam_role.terraform_deployment.arn
+      aws_iam_role.terraform_deployment.arn,
+      "arn:aws:iam::190285489485:role/ecs-execution-role"
     ]
   }
 }
