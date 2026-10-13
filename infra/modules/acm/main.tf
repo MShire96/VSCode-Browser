@@ -1,0 +1,36 @@
+resource "aws_acm_certificate" "moshire" {
+  domain_name       = var.a_record_name
+  validation_method = "DNS"
+
+  tags = {
+    Environment = "test"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_acm_certificate_validation" "moshire" {
+  certificate_arn         = aws_acm_certificate.moshire.arn
+  validation_record_fqdns = [for record in aws_route53_record.vscode_crecord : record.fqdn]
+}
+
+
+resource "aws_route53_record" "vscode_crecord" {
+  for_each = {
+    for dvo in aws_acm_certificate.moshire.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+  zone_id = var.r53_hosted_zone_id
+  name    = each.value.name
+  type    = each.value.type
+  records = [each.value.record]
+  ttl = 60
+
+  allow_overwrite = true
+  }
+
