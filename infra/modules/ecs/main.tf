@@ -20,6 +20,12 @@ resource "aws_ecs_service" "vscode_service" {
     subnets          = var.private_subnet_ids
     assign_public_ip = false
   }
+
+  lifecycle {
+    ignore_changes = [ 
+      task_definition
+     ]
+  }
 }
 
 
