@@ -2,10 +2,6 @@ resource "aws_acm_certificate" "moshire" {
   domain_name       = var.a_record_name
   validation_method = "DNS"
 
-  tags = {
-    Environment = "test"
-  }
-
   lifecycle {
     create_before_destroy = true
   }
