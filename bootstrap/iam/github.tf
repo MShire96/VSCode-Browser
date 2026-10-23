@@ -101,9 +101,13 @@ data "aws_iam_policy_document" "github_actions_permissions" {
       "iam:PassRole",
     ]
     resources = [
-      "arn:aws:iam::190285489485:role/ecs-vsc-exe-role",
-      
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/ecs-vsc-exe-role",
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["ecs-tasks.amazonaws.com"]
+    }
   }
 }
 
