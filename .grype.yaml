@@ -1,0 +1,13 @@
+# Accepted risk: transitive npm dependencies of vendored code-server v4.139.1.
+# Fixes exist upstream but aren't in this release's lockfile.
+ignore:
+  - vulnerability: GHSA-vc2v-76pw-4v95   # compression
+  - vulnerability: GHSA-8r9p-f939-6h3c   # follow-redirects
+  - vulnerability: GHSA-q3jh-wrc6-jgq8   # follow-redirects
+  - vulnerability: GHSA-pqg4-j6r4-53mv   # shell-quote
+  - vulnerability: GHSA-rfgv-xxqx-mfg5   # undici
+  - vulnerability: GHSA-xjj6-f33q-929c   # undici
+  - vulnerability: GHSA-w293-vg96-wgc3   # undici
+  - vulnerability: GHSA-c475-qrg2-pj4r   # basic-ftp
+  - vulnerability: GHSA-27r3-jxmh-p828   # body-parser
+  - vulnerability: GHSA-mrhx-c7xc-m3w5   # zod
