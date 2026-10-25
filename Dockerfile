@@ -26,11 +26,18 @@ RUN apt-get update -y && apt-get install -y \
         git \
         quilt
 
-COPY . .
-
-RUN git submodule update --init
+COPY app /src/app/
 
 WORKDIR /src/app
+
+# VS Code source pinned to the commit code-server v4.139.1 uses
+# (from: git ls-tree HEAD app/lib/vscode). Update when re-vendoring.
+ARG VSCODE_COMMIT=04c0d99f4fb0d8afe6ce4f0c58e31e183ac3e4b1
+
+RUN git init lib/vscode && \
+    cd lib/vscode && \
+    git fetch --depth 1 https://github.com/microsoft/vscode.git ${VSCODE_COMMIT} && \
+    git checkout FETCH_HEAD
 
 RUN quilt push -a 
 
