@@ -8,3 +8,5 @@ build.log
 *.log
 .dockerignore
 infra
+.git
+**/.git
