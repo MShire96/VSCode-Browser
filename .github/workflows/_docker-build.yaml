@@ -61,7 +61,7 @@ jobs:
           set -euo pipefail
           docker run -d --name testvsc -p 8080:8080 "${IMAGE}"
 
-          if ! curl -fsS --retry 20 --retry-delay 3 --retry-connrefused http://localhost:8080/healthz; then
+          if ! curl -fsS --retry 20 --retry-delay 3 --retry-all-errors http://localhost:8080/healthz; then
             echo "code-server did not become healthy"
             docker logs testvsc
             exit 1
