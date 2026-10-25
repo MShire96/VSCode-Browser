@@ -35,7 +35,7 @@ jobs:
           cache-from: |
             type=gha
           cache-to: |
-            mode=min,type=gha
+            mode=max,type=gha
           load: true
 
       - name: syft

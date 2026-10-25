@@ -30,6 +30,8 @@ COPY app /src/app/
 
 WORKDIR /src/app
 
+
+
 # VS Code source pinned to the commit code-server v4.139.1 uses
 # (from: git ls-tree HEAD app/lib/vscode). Update when re-vendoring.
 ARG VSCODE_COMMIT=04c0d99f4fb0d8afe6ce4f0c58e31e183ac3e4b1
@@ -50,6 +52,12 @@ RUN --mount=type=secret,id=github_token,env=GITHUB_TOKEN \
         source ./build/azure-pipelines/linux/setup-env.sh && \
         node build/npm/preinstall.ts && \
         npm ci
+
+# code-server's build scripts call `git rev-parse HEAD` to embed a commit hash.
+# .git isn't copied into the build (it breaks caching), so create a placeholder commit.
+RUN git init -q . && \
+    git -c user.name=build -c user.email=build@local \
+        commit -q --allow-empty -m "vendored code-server v${VERSION}"
 
 RUN --mount=type=secret,id=github_token,env=GITHUB_TOKEN \
         NODE_OPTIONS="--max-old-space-size=8192" npm run build:vscode
