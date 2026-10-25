@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24.21.0-bookworm AS builder
+FROM node:24.21.0-trixie@sha256:1278a37eb510ec1606fba0e80f554bcc941ae0b44f35ae373c4822ae7717c64d AS builder
 
 SHELL ["/bin/bash", "-c"]
 
 WORKDIR /src
 
-ENV VERSION=0.0.0 \
+ENV VERSION=1.0.0 \
     ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     VSCODE_TARGET=linux-x64 \
@@ -52,7 +52,7 @@ RUN npm run build
 
 RUN KEEP_MODULES=1 npm run release
 
-FROM debian:bookworm-slim AS runtime
+FROM debian:13.7-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad AS runtime
 
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
         libx11-6 \
