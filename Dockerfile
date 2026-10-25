@@ -1,12 +1,14 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24.21.0-bookworm AS builder
+FROM node:24.21.0-trixie@sha256:1278a37eb510ec1606fba0e80f554bcc941ae0b44f35ae373c4822ae7717c64d AS builder
 
 SHELL ["/bin/bash", "-c"]
 
 WORKDIR /src
 
-ENV VERSION=0.0.0 \
+# Vendored from coder/code-server v4.139.1 (released 2026-09-26
+
+ENV VERSION=4.139.1 \
     ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     VSCODE_TARGET=linux-x64 \
@@ -24,11 +26,20 @@ RUN apt-get update -y && apt-get install -y \
         git \
         quilt
 
-COPY . .
-
-RUN git submodule update --init
+COPY app /src/app/
 
 WORKDIR /src/app
+
+
+
+# VS Code source pinned to the commit code-server v4.139.1 uses
+# (from: git ls-tree HEAD app/lib/vscode). Update when re-vendoring.
+ARG VSCODE_COMMIT=04c0d99f4fb0d8afe6ce4f0c58e31e183ac3e4b1
+
+RUN git init lib/vscode && \
+    cd lib/vscode && \
+    git fetch --depth 1 https://github.com/microsoft/vscode.git ${VSCODE_COMMIT} && \
+    git checkout FETCH_HEAD
 
 RUN quilt push -a 
 
@@ -42,6 +53,12 @@ RUN --mount=type=secret,id=github_token,env=GITHUB_TOKEN \
         node build/npm/preinstall.ts && \
         npm ci
 
+# code-server's build scripts call `git rev-parse HEAD` to embed a commit hash.
+# .git isn't copied into the build (it breaks caching), so create a placeholder commit.
+RUN git init -q . && \
+    git -c user.name=build -c user.email=build@local \
+        commit -q --allow-empty -m "vendored code-server v${VERSION}"
+
 RUN --mount=type=secret,id=github_token,env=GITHUB_TOKEN \
         NODE_OPTIONS="--max-old-space-size=8192" npm run build:vscode
 
@@ -52,7 +69,7 @@ RUN npm run build
 
 RUN KEEP_MODULES=1 npm run release
 
-FROM debian:bookworm-slim AS runtime
+FROM debian:13.7-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad AS runtime
 
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
         libx11-6 \
