@@ -6,7 +6,9 @@ SHELL ["/bin/bash", "-c"]
 
 WORKDIR /src
 
-ENV VERSION=1.0.0 \
+# Vendored from coder/code-server v4.139.1 (released 2026-09-26
+
+ENV VERSION=4.139.1 \
     ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     VSCODE_TARGET=linux-x64 \
