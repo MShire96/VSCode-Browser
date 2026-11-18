@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   build:
-    uses: ./.github/workflows/_docker-build.yml
+    uses: ./.github/workflows/_docker-build.yaml
 
   deploy:
     needs: build
