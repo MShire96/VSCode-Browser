@@ -68,7 +68,7 @@ jobs:
 
       - name: Save image
         if: github.ref == 'refs/heads/main'
-        run: docker save vscode:{{ github.sha }} -o image.tar
+        run: docker save vscode:${{ github.sha }} -o image.tar
 
       - name: Upload image
         if: github.ref == 'refs/heads/main'
