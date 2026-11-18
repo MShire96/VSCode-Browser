@@ -91,3 +91,5 @@ jobs:
           cluster: ${{ vars.ECS_CLUSTER }}
           service: ${{ vars.ECS_SERVICE }}
           wait-for-service-stability: true
+          wait-max-delay-seconds: 15
+          max-retries: 5
