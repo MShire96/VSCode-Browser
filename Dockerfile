@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24.21.0-trixie@sha256:1278a37eb510ec1606fba0e80f554bcc941ae0b44f35ae373c4822ae7717c64d AS builder
+FROM node:24.22.1-trixie@sha256:f1e034976f948cf212ef1f659c12e5dd58ac7eab947831813e81a62401ca38be AS builder
 
 SHELL ["/bin/bash", "-c"]
 
@@ -31,9 +31,8 @@ COPY app /src/app/
 WORKDIR /src/app
 
 
-
 # VS Code source pinned to the commit code-server v4.139.1 uses
-# (from: git ls-tree HEAD app/lib/vscode). Update when re-vendoring.
+# (from: git ls-tree HEAD app/lib/vscode). 
 ARG VSCODE_COMMIT=04c0d99f4fb0d8afe6ce4f0c58e31e183ac3e4b1
 
 RUN git init lib/vscode && \
@@ -42,6 +41,14 @@ RUN git init lib/vscode && \
     git checkout FETCH_HEAD
 
 RUN quilt push -a 
+
+# TEMPORARY override of vscode's pinned node for bundled server: 24.20.0 has CVEs
+ARG REMOTE_NODE_VERSION=24.22.1
+RUN cd lib/vscode && \
+    sed -i "s/^target=.*/target=\"${REMOTE_NODE_VERSION}\"/" remote/.npmrc && \
+    grep '^target=' remote/.npmrc && \
+    curl -fsSL "https://nodejs.org/dist/v${REMOTE_NODE_VERSION}/SHASUMS256.txt" \
+      | grep "node-v${REMOTE_NODE_VERSION}-linux-x64" >> build/checksums/nodejs.txt
 
 # Install vscode build tools
 RUN cd lib/vscode/build && npm ci
@@ -69,7 +76,7 @@ RUN npm run build
 
 RUN KEEP_MODULES=1 npm run release
 
-FROM debian:13.7-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad AS runtime
+FROM debian:13.7-slim@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2 AS runtime
 
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
         libx11-6 \
