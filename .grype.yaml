@@ -15,3 +15,4 @@ ignore:
   - vulnerability: GHSA-qrxm-fqhp-jwvm   # undici
   - vulnerability: GHSA-2m5v-pch6-74hx   # undici
   - vulnerability: GHSA-4w7w-5xrc-9h26   # undici
+  - vulnerability: GHSA-mrwp-f3q8-3g9p   # follow-redirects
