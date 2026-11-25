@@ -3,7 +3,6 @@
 Self-hosted [code-server](https://github.com/coder/code-server) (VS Code in the browser), **built from source**, containerised, and deployed to AWS ECS Fargate with Terraform and a secure GitHub Actions pipeline.
 
 ---
-
 ![ECS VSCode Architecture](assets/VSC.png)
 
 ## What this project is
@@ -16,6 +15,8 @@ I chose to build it from source, rather than rely on a pre-built image. This gav
 
 The goal was to create an end-to-end deployment platform where a push to GitHub triggers a pipeline that builds, scans and tests the application before securely deploying it to AWS ECS Fargate.
 
+![Live running app](assets/Hello-world.png)
+
 **Highlights**
 
 - Builds VS Code and code-server from source in a multi-stage Docker build, shipping only the release output on a slim, non-root runtime
@@ -27,7 +28,6 @@ The goal was to create an end-to-end deployment platform where a push to GitHub 
 
 ## Architecture
 
-<!-- Architecture diagram -->
 
 **Request flow:** browser → Route 53 → ALB (HTTPS, ACM certificate) → ECS Fargate task running code-server on port 8080.
 
