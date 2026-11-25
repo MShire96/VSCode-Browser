@@ -40,6 +40,11 @@ resource "aws_lb_target_group" "vscoder" {
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   target_type = "ip"
+
+  health_check {
+    path = "/healthz"
+    port = 8080
+  }
 }
 
 resource "aws_lb_listener" "vscoder" {
